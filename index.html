@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel='icon' href='coffee-img/favicon.ico' type='image/x-icon' sizes="16x16" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+    integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <title>Кофемашина</title>
+
+  <style>
+    :root {
+      --bg-color: #f0f0f0;
+      --box-shadow-grey: 0 3px 8px #0000003d;
+      --box-shadow-blue: 0 0 15px 6px #88b7f991;
+      --box-shadow-red: 0 0 15px 6px #f9888891;
+      --box-shadow-green: 0 0 15px 6px #88f9d391;
+    }
+
+    body {
+      font-family: 'PT Serif', serif;
+      background-image: url("./coffee-img/bg.png");
+      background-position: center center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: cover;
+      font-size: 0.8rem;
+    }
+
+    .header-text {
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.6rem;
+      color: #35a0e3;
+    }
+
+    .cash-acceptor>img {
+      height: 11rem;
+      margin-bottom: 1rem;
+      background-color: #272e35;
+      border-radius: 15px;
+      box-shadow: var(--box-shadow-grey);
+    }
+
+    .cash-money {
+      display: none;
+      margin-left: 1rem;
+    }
+
+    .cash-money>img {
+      height: 3rem;
+      margin-bottom: 0.5rem;
+      box-shadow: var(--box-shadow-grey);
+    }
+
+    .cash-money>img:hover {
+      cursor: pointer;
+      box-shadow: var(--box-shadow-blue);
+    }
+
+    .cash-money>img:active {
+      cursor: grabbing;
+      box-shadow:  var(--box-shadow-red);
+    }
+
+    .hide-bill {
+      animation: rotate 2s ease;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(90deg) rotateY(35deg);
+        height: 6rem;
+        opacity: 1;
+      }
+
+      100% {
+        transform: rotate(90deg) rotateY(85deg);
+        height: 0rem;
+        opacity: 0;
+      }
+    }
+
+    #balance {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-color);
+      border-radius: 10px;
+      box-shadow: var(--box-shadow-grey);
+      height: 3rem;
+      width: 10rem;
+      margin-bottom: 1rem;
+      color: #00646b;
+      font-weight: 700;
+    }
+
+    .coffee-item {
+      margin-bottom: 2rem;
+    }
+
+    .coffee-button {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 7rem;
+      height: 6rem;
+      background-color: var(--bg-color);
+      border-radius: 15px;
+      color: #3e403f;
+      font-style: italic;
+      box-shadow: var(--box-shadow-grey);
+      border: none;
+    }
+
+    .coffee-button:hover {
+      box-shadow: var(--box-shadow-blue);
+      animation: bounce 1s;
+      color: #bf8958;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      60%,
+      100% {
+        transform: translateY(0);
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+        transform: translateY(-5px);
+      }
+    }
+
+    .coffee-button>img {
+      height: 2.5rem;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      background-color: var(--bg-color);
+      box-shadow: var(--box-shadow-grey);
+      border: none;
+      height: 3rem;
+      width: 10.5rem;
+      color: #3e403f;
+      margin-bottom: 1rem;
+    }
+
+    .buttons>img {
+      height: 2.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .show-money-button {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .show-money-button:hover {
+      box-shadow: 0 0 20px 6px #017d5863;
+      animation: bounce 1s;
+      color: #00646b;
+    }
+
+    .add-money-button:hover {
+      box-shadow: 0 0 20px 6px #f9d78da3;
+      color: #ac8345;
+      animation: bounce 1s;
+    }
+
+    .get-change-button:hover {
+      box-shadow: 0 0 20px 6px #fedad3;
+      animation: bounce 1s;
+      color: #ea8b82;
+    }
+
+    .result-field {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      background-color: var(--bg-color);
+      box-shadow: var(--box-shadow-grey);
+      border-radius: 10px;
+      color: #ee7231;
+      font-weight: 700;
+      width: 11rem;
+      height: 8rem;
+      padding: 0.5rem;
+    }
+
+    .result-field-change {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      color: #3e403f;
+      padding: 0.3rem 1rem 0 1rem;
+      line-height: 3rem;
+      height: 8rem;
+    }
+
+    .progress {
+      width: 9rem;
+      margin-left: 0.2rem;
+      margin-top: -4rem;
+      margin-bottom: 3rem;
+      border-radius: 10px;
+    }
+
+    .progress-bar {
+      background-color: #35a0e3;
+    }
+
+    .coffee-text {
+      display: flex;
+      margin-top: 1rem;
+    }
+
+    .coffee-text>img {
+      margin-top: -1rem;
+    }
+
+    .coffee-cat {
+      height: 2.9rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container-lg ml-4 mt-2">
+    <div class="row ml-1 align-items-start">
+      <div class="col-sm-3">
+        <div class="row ">
+          <span class="header-text">Внесите деньги:</span>
+        </div>
+        <div class="row cash-acceptor">
+          <img class="cash-acceptor-img droppable" src="./coffee-img/cash-acceptor.png" alt="Cash acceptor">
+        </div>
+        <div class="row">
+          <button type="button" class="buttons add-money-button" onclick="addMoney()">
+            <img src="./coffee-img/icon-coin.png" alt="Coin">
+            <span>Добавить на баланс 100 руб.</span>
+          </button>
+        </div>
+        <div class="row">
+          <button type="button" class="buttons show-money-button" value="on" onclick="showMoney()">
+            <img src="./coffee-img/icon-wallet-close.png" alt="Wallet" />
+            <span>Показать деньги</span>
+          </button>
+        </div>
+        <div class="row cash-money align-items-center flex-column">
+          <img src="./coffee-img/rubles50.jpg" alt="50 rubles" data-value="50">
+          <img src="./coffee-img/rubles100.jpg" alt="100 rubles" data-value="100">
+          <img src="./coffee-img/rubles500.jpg" alt="500 rubles" data-value="500">
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="row ml-1">
+          <span class="header-text">Баланс:</span>
+        </div>
+        <div class="row ml-1 flex-column">
+          <div class="money">
+            <input type="hidden" id="money">
+            <p id="balance" class="balance">0 руб.</p>
+          </div>
+        </div>
+        <div class="row ml-1">
+          <span class="header-text">Нажмите для выдачи напитка:</span>
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(100, 'Американо')">
+                <img src="./coffee-img/icon-americano.png" alt="Americano">
+                <span>Американо<br>100 руб.</span>
+              </button>
+            </div>
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(135, 'Латте')">
+                <img src="./coffee-img/icon-latte.png" alt="Latte">
+                <span>Латте<br>135 руб.</span>
+              </button>
+            </div>
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(122, 'Горячий шоколад')">
+                <img src="./coffee-img/icon-hot-chocolate.png" alt="Hot chocolate">
+                <span>Горячий шоколад<br>122 руб.</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(120, 'Эспрессо')">
+                <img src="./coffee-img/icon-espresso.png" alt="Espresso">
+                <span>Эспрессо<br>120 руб.</span>
+              </button>
+            </div>
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(158, 'Капучино')">
+                <img src="./coffee-img/icon-cappuccino.png" alt="Capuchino">
+                <span>Капучино<br>158 руб.</span>
+              </button>
+            </div>
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(93, 'Молоко')">
+                <img src="./coffee-img/icon-milk.png" alt="Milk">
+                <span>Молоко<br>93 руб.</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="row">
+          <span class="header-text">Результат выдачи:</span>
+        </div>
+
+        <div class="row mb-4 result-field" id="message"></div>
+        <div class="row progress" hidden>
+          <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+        </div>
+        <div class="row">
+          <span class="header-text">Получите сдачу:</span>
+        </div>
+        <div class="row">
+          <button type="button" class="buttons get-change-button" onclick="getChange(+money.value)">
+            <img src="./coffee-img/icon-piggy-bank.png" alt="Piggy-bank">
+            <span>Получить сдачу</span>
+          </button>
+        </div>
+        <div class="row result-field result-field-change" id="change" onclick="deleteChange()">
+          <div class="col-5 pl-0 result-field-change"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    let money = document.getElementById('money');
+    let balance = document.getElementById("balance");
+    let message = document.getElementById('message');
+    let buttons = document.getElementsByTagName("button");
+    let change = document.getElementById('change');
+    let moneyImgs = document.querySelectorAll('.cash-money>img');
+    let cashAcceptor = document.querySelector('.cash-acceptor-img');
+    let counterMoneyImgs = 3;
+    let currentDroppable = null;
+
+
+    for (let moneyImg of moneyImgs) {
+      moneyImg.onmousedown = (e) => {
+        moneyImg = e.currentTarget;
+        moneyImg.style.position = 'absolute';
+        moneyImg.style.zIndex = 999;
+        moneyImg.style.transform = "rotate(90deg)";
+        moneyImg.style.height = "6rem";
+
+        document.addEventListener("mousemove", moveElement);
+
+        function onMouseMove(e) {
+            moveElement(e.pageX, e.pageY);
+
+            moneyImg.hidden = true;
+            let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+            moneyImg.hidden = false;
+
+            if (!elemBelow) return;
+
+            let droppableBelow = elemBelow.closest('.droppable');
+            if (currentDroppable != droppableBelow) {
+              if (currentDroppable) {
+                leaveDroppable();
+              }
+              currentDroppable = droppableBelow;
+              if (currentDroppable) {
+                enterDroppable();
+              }
+            }
+          }
+
+          document.addEventListener('mousemove', onMouseMove);
+
+          moneyImg.onmouseup = () => {
+            document.removeEventListener('mousemove', onMouseMove);
+            moneyImg.onmouseup = null;
+          }
+
+          function enterDroppable() {
+            moneyImg.style.boxShadow = 'var(--box-shadow-green)';
+          }
+
+          function leaveDroppable() {
+            moneyImg.style.boxShadow = 'var(--box-shadow-red)';
+          }
+
+          moneyImg.ondragstart = () => false;
+
+        document.onmouseup = () => {
+          let moneyImgTop = moneyImg.getBoundingClientRect().top;
+          let moneyImgLeft = moneyImg.getBoundingClientRect().left;
+          let moneyImgRight = moneyImg.getBoundingClientRect().right;
+          let cashAcceptorTop = cashAcceptor.getBoundingClientRect().top + 5;
+          let cashAcceptorLeft = cashAcceptor.getBoundingClientRect().left + 5;
+          let cashAcceptorRight = cashAcceptor.getBoundingClientRect().right - 5;
+          let cashAcceptorBottom = cashAcceptor.getBoundingClientRect().bottom -
+            (cashAcceptor.getBoundingClientRect().height / 3) * 2;
+
+          document.removeEventListener("mousemove", moveElement);
+
+          moneyImg.style.zIndex = 1;
+          moneyImg.style.transform = "rotate(0deg)";
+          moneyImg.style.height = "3rem";
+
+          if (moneyImgTop > cashAcceptorTop &&
+            moneyImgLeft > cashAcceptorLeft &&
+            moneyImgRight < cashAcceptorRight &&
+            moneyImgTop < cashAcceptorBottom) {
+            moneyImg.classList.add('hide-bill');
+            setTimeout(() => moneyImg.hidden = true, 1000);
+            counterMoneyImgs -= 1;
+            money.value = +money.value + +moneyImg.dataset.value;
+            balance.innerHTML = `${money.value} руб.`;
+            balance.style.boxShadow = 'var(--box-shadow-blue)';
+          }
+          if (counterMoneyImgs === 0) {
+            document.querySelector('.show-money-button').hidden = true;
+          }
+        }
+
+        function moveElement(e) {
+          moneyImg.style.top = e.pageY - moneyImg.offsetHeight / 2 + 'px';
+          moneyImg.style.left = e.pageX - moneyImg.offsetWidth / 2 + 'px';
+        }
+
+        moneyImg.ondragstart = () => false;
+      }
+    }
+
+
+    function buttonsDisable() {
+      for (let button of buttons) {
+        button.disabled = true;
+      }
+    }
+
+    function buttonsEnable() {
+      for (let button of buttons) {
+        button.disabled = false;
+      }
+    }
+
+    function showMoney() {
+      let showMoneyButton = document.querySelector('.show-money-button');
+      let cashMoney = document.querySelector('.cash-money');
+      let walletOpen = '<img src="./coffee-img/icon-wallet-open.png" style="height:2.5rem;"/>';
+      let walletClose = '<img src="./coffee-img/icon-wallet-close.png" style="height:2.5rem;"/>';
+      let hide = `${walletOpen} Скрыть деньги`;
+      let show = `${walletClose} Показать деньги`;
+      if (showMoneyButton.value === "on") {
+        showMoneyButton.value = "off";
+        showMoneyButton.innerHTML = hide;
+        cashMoney.style.display = "block";
+      } else if (showMoneyButton.value === "off") {
+        showMoneyButton.value = "on";
+        showMoneyButton.innerHTML = show;
+        cashMoney.style.display = "none";
+      }
+    }
+
+    function getCoffee(price, name) {
+      buttonsDisable();
+      if (money.value >= price) {
+        money.value -= price;
+        balance.innerHTML = `${money.value} руб.`;
+        startProgressBar(name);
+      }
+      else {
+        noMoney(name);
+        buttonsEnable();
+      }
+    }
+
+    function startProgressBar(coffeeName) {
+      let i = 0;
+      let progressBar = document.querySelector(".progress-bar");
+      progressBar.parentElement.hidden = false;
+      isCooking(coffeeName);
+      function progress() {
+        buttonsDisable();
+        i++;
+        progressBar.style.width = i + "%";
+        if (i === 60) {
+          almostCooking(coffeeName);
+        } else if (i === 100) {
+          clearInterval(timerId);
+          progressBar.parentElement.hidden = true;
+          progressBar.style.width = 0 + "%";
+          cofeeCooked(coffeeName);
+          setTimeout(() => buttonsEnable(), 0);
+        }
+      }
+      let timerId = setInterval(progress, 70);
+    }
+
+    function getChange(num) {
+      if (num === 0) {
+        change.innerHTML = '<span style="color:#ee7231;">На балансе нет денег!</span>';
+        balance.style.boxShadow = 'var(--box-shadow-grey)';
+        return;
+      }
+      let coins = [];
+      let result = '';
+      let button = document.querySelector('.get-change-button');
+      let rubl1 = '<img src="./coffee-img/icon-1rubl.png" style="height:2.5rem;"/>';
+      let rubl2 = '<img src="./coffee-img/icon-2rublya.png" style="height:2.5rem"/>';
+      let rubl5 = '<img src="./coffee-img/icon-5rubley.png" style="height:2.5rem"/>';
+      let rubl10 = '<img src="./coffee-img/icon-10rubley.png" style="height:2.5rem"/>';
+      for (let coin of [10, 5, 2, 1]) {
+        const count = parseInt(num / coin);
+        num = num % coin;
+        if (count > 0) {
+          if (coin === 1) coins.push(`${rubl1} x ${count}`);
+          if (coin === 2) coins.push(`${rubl2} x ${count}`);
+          if (coin === 5) coins.push(`${rubl5} x ${count}`);
+          if (coin === 10) coins.push(`${rubl10} x ${count}`);
+        }
+      }
+      result = `<p> ${coins.join(',  ')} </p>`;
+      money.value = '';
+      message.innerHTML = '';
+      balance.innerHTML = `0 руб.`;
+      change.innerHTML = result;
+      balance.style.boxShadow = 'var(--box-shadow-grey)';
+    }
+
+    function addMoney() {
+      deleteMessage(message.target);
+      deleteChange(change.target);
+      money.value = +money.value + 100;
+      balance.innerHTML = `${money.value} руб.`;
+      balance.style.boxShadow = 'var(--box-shadow-blue)';
+    }
+
+    function isCooking(name) {
+      let coffeeImg = '<img src="./coffee-img/coffee-progress.gif" style="height:4rem;"/>';
+      if (name === 'Молоко') {
+        let out = `
+        <div class="coffee-text">
+        ${coffeeImg}<span style="color:#ac8345">Вашe ${name.toLowerCase()} готовится...</span>
+        </div>
+        `;
+        message.innerHTML = out;
+      } else {
+        let out = `
+        <div class="coffee-text">
+         ${coffeeImg}<span style="color:#ac8345">Ваш ${name.toLowerCase()} готовится...</span>
+        </div>
+        `;
+        message.innerHTML = out;
+      }
+    }
+
+    function almostCooking(name) {
+      let coffeeImg = '<img src="./coffee-img/coffee-progress.gif" style="height:4rem;"/>';
+      if (name === 'Молоко') {
+        let out = `
+        <div class="coffee-text">
+          ${coffeeImg}<span style="color:#719d34">Вашe ${name.toLowerCase()} почти готово...</span>
+        </div>
+        `;
+        message.innerHTML = out;
+      } else {
+        let out = `
+        <div class="coffee-text">
+        ${coffeeImg}<span style="color:#719d34">Ваш ${name.toLowerCase()} почти готов...</span>
+        </div>
+        `;
+        message.innerHTML = out;
+      }
+    }
+
+    function cofeeCooked(name) {
+      let coffeeImg = '<img src="./coffee-img/coffee-cat.png" class="coffee-cat"/>';
+      if (name === 'Молоко') {
+        let out = `
+          <span style="color:#00646b; position:relative; top:1.5rem;">Вашe ${name.toLowerCase()} готово!</span>
+          <br>${coffeeImg}
+        `;
+        message.innerHTML = out;
+      } else {
+        let out = `
+          <span style="color:#00646b; position:relative; top:1.5rem;">Ваш ${name.toLowerCase()} готов!</span>
+          <br>${coffeeImg}
+        `;
+        message.innerHTML = out;
+      }
+    }
+
+    function noMoney(name) {
+      let poverty = '<img src="./coffee-img/icon-poverty.png" style="height:2.5rem"/>';
+      let out = `${poverty}<span style="color:#ee7231">Денег на ${name.toLowerCase()} не хватает!</span>`;
+      message.innerHTML = out;
+    }
+
+    function deleteMessage() {
+      message.innerHTML = '';
+    }
+
+    function deleteChange() {
+      change.innerHTML = '';
+    }
+
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>
