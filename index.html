@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel='icon' href='coffee-img/favicon.ico' type='image/x-icon' sizes="16x16" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+    integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./scripts/script.js" defer></script>
+  <title>Кофемашина</title>
+</head>
+
+<body>
+
+  <div class="container-lg ml-4 mt-2">
+    <div class="row ml-1 align-items-start">
+      <div class="col-sm-3">
+        <div class="row ">
+          <span class="header-text">Внесите деньги:</span>
+        </div>
+        <div class="row cash-acceptor">
+          <img class="cash-acceptor-img droppable" src="./img/cash-acceptor.png" alt="Cash acceptor">
+        </div>
+        <div class="row">
+          <button type="button" class="buttons add-money-button" onclick="addMoney()">
+            <img src="./img/icon-coin.png" alt="Coin">
+            <span>Добавить на баланс 100 руб.</span>
+          </button>
+        </div>
+        <div class="row">
+          <button type="button" class="buttons show-money-button" value="on" onclick="showMoney()">
+            <img src="./img/icon-wallet-close.png" alt="Wallet" />
+            <span>Показать деньги</span>
+          </button>
+        </div>
+        <div class="row cash-money align-items-center flex-column">
+          <img src="./img/rubles50.jpg" alt="50 rubles" data-value="50">
+          <img src="./img/rubles100.jpg" alt="100 rubles" data-value="100">
+          <img src="./img/rubles500.jpg" alt="500 rubles" data-value="500">
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="row ml-1">
+          <span class="header-text">Баланс:</span>
+        </div>
+        <div class="row ml-1 flex-column">
+          <div class="money">
+            <input type="hidden" id="money">
+            <p id="balance" class="balance">0 руб.</p>
+          </div>
+        </div>
+        <div class="row ml-1">
+          <span class="header-text">Нажмите для выдачи напитка:</span>
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(100, 'Американо')">
+                <img src="./img/icon-americano.png" alt="Americano">
+                <span>Американо<br>100 руб.</span>
+              </button>
+            </div>
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(135, 'Латте')">
+                <img src="./img/icon-latte.png" alt="Latte">
+                <span>Латте<br>135 руб.</span>
+              </button>
+            </div>
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(122, 'Горячий шоколад')">
+                <img src="./img/icon-hot-chocolate.png" alt="Hot chocolate">
+                <span>Горячий шоколад<br>122 руб.</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(120, 'Эспрессо')">
+                <img src="./img/icon-espresso.png" alt="Espresso">
+                <span>Эспрессо<br>120 руб.</span>
+              </button>
+            </div>
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(158, 'Капучино')">
+                <img src="./img/icon-cappuccino.png" alt="Capuchino">
+                <span>Капучино<br>158 руб.</span>
+              </button>
+            </div>
+            <div class="coffee-item">
+              <button type="button" class="coffee-button" onclick="getCoffee(93, 'Молоко')">
+                <img src="./img/icon-milk.png" alt="Milk">
+                <span>Молоко<br>93 руб.</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="row">
+          <span class="header-text">Результат выдачи:</span>
+        </div>
+
+        <div class="row mb-4 result-field" id="message"></div>
+        <div class="row progress" hidden>
+          <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+        </div>
+        <div class="row">
+          <span class="header-text">Получите сдачу:</span>
+        </div>
+        <div class="row">
+          <button type="button" class="buttons get-change-button" onclick="getChange(+money.value)">
+            <img src="./img/icon-piggy-bank.png" alt="Piggy-bank">
+            <span>Получить сдачу</span>
+          </button>
+        </div>
+        <div class="row result-field result-field-change" id="change" onclick="deleteChange()">
+          <div class="col-5 pl-0 result-field-change"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>
